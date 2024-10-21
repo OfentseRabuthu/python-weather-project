@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WeatherSense</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'weather/styles.css' %}">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+</head>
+<body>
+    <header>
+        <h1>WeatherSense</h1>
+    </header>
+    <main>
+        <form method="post">
+            {% csrf_token %}
+            <input type="text" name="city" id="city" placeholder="Enter city name" required>
+            <button type="submit">Get Weather</button>
+        </form>
+
+        {% if error %}
+            <p class="error">{{ error }}</p>
+        {% endif %}
+
+        {% if current %}
+            <div class="current-weather">
+                <h2>Current Weather in {{ city }}</h2>
+                <img src="http://openweathermap.org/img/wn/{{ current.weather.0.icon }}@2x.png" alt="{{ current.weather.0.description }}">
+                <p>Temperature: {{ current.temp }}°C</p>
+                <p>Feels like: {{ current.feels_like }}°C</p>
+                <p>Humidity: {{ current.humidity }}%</p>
+                <p>Wind Speed: {{ current.wind_speed }} m/s</p>
+                <p>UV Index: {{ current.uvi }}</p>
+                <p>Description: {{ current.weather.0.description }}</p>
+            </div>
+
+            <div class="forecast">
+                <h2>7-Day Forecast</h2>
+                <div class="forecast-scroll">
+                    {% for day in daily %}
+                        <div class="forecast-day">
+                            <h3>{{ day.dt|date:"D, M d" }}</h3>
+                            <img src="http://openweathermap.org/img/wn/{{ day.weather.0.icon }}@2x.png" alt="{{ day.weather.0.description }}">
+                            <p>Max: {{ day.temp.max }}°C</p>
+                            <p>Min: {{ day.temp.min }}°C</p>
+                            <p>Precipitation: {{ day.pop|floatformat:0 }}%</p>
+                            <p>{{ day.weather.0.description }}</p>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        {% endif %}
+
+        <div class="recent-searches">
+            <h2>Recent Searches</h2>
+            <ul>
+                {% for search in recent_searches %}
+                    <li>{{ search.city_name }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+    </main>
+
+    <script>
+        $(function() {
+            $("#city").autocomplete({
+                source: "{% url 'autocomplete' %}",
+                minLength: 2,
+            });
+        });
+
+        // Check if it's nighttime and apply dark mode
+        function applyDarkMode() {
+            const hour = new Date().getHours();
+            if (hour < 6 || hour >= 18) {
+                document.body.classList.add('dark-mode');
+            } else {
+                document.body.classList.remove('dark-mode');
+            }
+        }
+
+        applyDarkMode();
+        setInterval(applyDarkMode, 60000); // Check every minute
+    </script>
+</body>
+</html>

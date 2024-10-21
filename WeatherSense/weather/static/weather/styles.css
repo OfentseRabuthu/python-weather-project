@@ -1,0 +1,93 @@
+body {
+    font-family: 'Roboto', sans-serif;
+    background-color: #e6f2ff;
+    color: #333;
+    transition: background-color 0.3s, color 0.3s;
+    margin: 0;
+    padding: 0;
+}
+
+.dark-mode {
+    background-color: #1a1a2e;
+    color: #f0f0f0;
+}
+
+header {
+    background-color: #4a90e2;
+    padding: 1rem;
+}
+
+h1 {
+    font-size: 2rem;
+    margin: 0;
+    color: white;
+}
+
+main {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem;
+}
+
+form {
+    display: flex;
+    margin-bottom: 2rem;
+}
+
+input[type="text"] {
+    flex-grow: 1;
+    padding: 0.5rem;
+    font-size: 1rem;
+}
+
+button {
+    background-color: #4a90e2;
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
+    cursor: pointer;
+}
+
+.error {
+    color: red;
+}
+
+.current-weather, .forecast, .recent-searches {
+    background-color: rgba(255, 255, 255, 0.8);
+    border-radius: 5px;
+    padding: 1rem;
+    margin-bottom: 2rem;
+}
+
+.dark-mode .current-weather,
+.dark-mode .forecast,
+.dark-mode .recent-searches {
+    background-color: rgba(0, 0, 0, 0.2);
+}
+
+.forecast-scroll {
+    display: flex;
+    overflow-x: auto;
+    padding-bottom: 1rem;
+}
+
+.forecast-day {
+    min-width: 150px;
+    text-align: center;
+    margin-right: 1rem;
+}
+
+.forecast-day img {
+    width: 50px;
+    height: 50px;
+}
+
+ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+li {
+    margin-bottom: 0.5rem;
+}
